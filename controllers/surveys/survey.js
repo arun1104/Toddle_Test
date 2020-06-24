@@ -10,6 +10,43 @@ class Survey {
     this.updateSurvey = this.updateSurvey.bind(this);
     this.getSurvey = this.getSurvey.bind(this);
     this.addQuestions = this.addQuestions.bind(this);
+    this.submitResponse = this.submitResponse.bind(this);
+    this.getSurveyResult = this.getSurveyResult.bind(this);
+  }
+
+  async getSurveyResult(surveyId, correlationId) {
+    const logger = new Logger(correlationId, 'getSurveyResult-Survey', 'getSurveyResult');
+    logger.info('Entry');
+    try {
+      let options = {surveyId, correlationId, collection: constants['SURVEY_RESPONSE']};
+      let survey = await this.dbLayer.getValuesAggregationMongoDB(options, correlationId);
+      logger.info('Exit');
+      return survey;
+    } catch (err) {
+      logger.error(err);
+      if (!err.status){
+        let error = new Error('Internal server error');
+        error.status = 500;
+        throw error;
+      } else throw err;
+    }
+  }
+
+  async submitResponse(body, correlationId) {
+    const logger = new Logger(correlationId, 'addQuestions-Survey', 'addQuestions');
+    logger.info('Entry');
+    try {
+      let survey = await this.dbLayer.insertDocs({ data: body }, correlationId, constants['SURVEY_RESPONSE']);
+      logger.info('Exit');
+      return survey;
+    } catch (err) {
+      logger.error(err);
+      if (!err.status){
+        let error = new Error('Internal server error');
+        error.status = 500;
+        throw error;
+      } else throw err;
+    }
   }
 
   async addQuestions(body, correlationId) {

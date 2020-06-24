@@ -8,4 +8,6 @@ module.exports = {
   createSurvey: surveyHandler.createSurveyRequesthandler,
   getSurvey: surveyHandler.getSurveyRequesthandler,
   addSurveyQuestions: surveyHandler.createSurveyQuestionRequesthandler,
+  submitSurvey: surveyHandler.submitSurveyRequesthandler,
+  getSurveyResult: surveyHandler.getSurveyResulthandler,
 };

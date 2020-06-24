@@ -13,6 +13,75 @@ class DBLayer {
     this.createDoc = this.createDoc.bind(this);
     this.insertDocs = this.insertDocs.bind(this);
     this.updateDoc = this.updateDoc.bind(this);
+    this.getValuesAggregationMongoDB = this.getValuesAggregationMongoDB.bind(this);
+  }
+
+  async getValuesAggregationMongoDB(options) {
+    const logger = new Logger(options.correlationId, 'getValuesAggregationMongoDB-dbLayer', 'getValuesAggregationMongoDB');
+    return new Promise((resolve, reject) => {
+      try {
+        let connectionString = `${process.env.mongoUrl}/${process.env.dbName}`;
+        logger.info('Connection string', connectionString);
+        this.MongoClient.connect(connectionString, async function(err, client) {
+          if (err) {
+            logger.error(err);
+            reject(new Error('DB error'));
+          }
+          let collectionName = options.collection;
+          logger.info('collection', collectionName);
+          const db = client.db(process.env.dbName);
+          const collection = db.collection(collectionName);
+
+          let uniqueQuestionIds = await collection.aggregate([
+            {
+              $match: {
+                surveyId: options.surveyId,
+              },
+            },
+            {
+              $group: {
+                _id: '$questionId'},
+            },
+          ]).toArray();
+          logger.info('individualRatingCount', uniqueQuestionIds);
+          let result = [];
+          for (let index = 0; index < uniqueQuestionIds.length; index++) {
+            let element = uniqueQuestionIds[index];
+            let temp = {questionId: element['_id']};
+            let answerCount = await collection.aggregate([
+              {
+                $match: {
+                  surveyId: options.surveyId, questionId: element['_id'],
+                },
+              },
+              {
+                $group: {
+                  _id: '$answer',
+                  count: {
+                    $sum: 1,
+                  },
+                },
+              },
+              {
+                $project: {
+                  _id: 0,
+                  response: '$_id',
+                  count: 1,
+                },
+              },
+            ]).toArray();
+            temp.result = answerCount;
+            result.push(temp);
+          }
+          resolve({ result});
+        });
+
+      } catch (err) {
+        console.log('Db conn err', err);
+        reject(new Error('DB error'));
+      }
+    });
+
   }
 
   async insertDocs(options, correlationId, modelName){

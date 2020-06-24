@@ -44,10 +44,9 @@ mongoose.model('survey_questions', questionsSchema, 'survey_questions');
 
 const responseSchema = new Schema({
   createdBy: { type: String, required: true, lowercase: true, trim: true },
-  question: { type: String, required: true },
-  type: { type: String, required: true },
-  options: [{ type: String }],
-  canBeSkipped: { type: Boolean, default: false },
+  questionId: { type: String, required: true },
+  surveyId: { type: String, required: true },
+  answer: { type: String, required: true },
 }, { strict: false, timestamps: true });
 
 mongoose.model('survey_responses', responseSchema, 'survey_responses');

@@ -143,7 +143,7 @@ paths:
             $ref: "#/definitions/errorMessage"
         '500':
           description: 'Server error'
-  /surveys/{surveyId}/results:
+  /surveys/{surveyId}/result:
     post:
       tags:
       - "Surveys"
@@ -178,7 +178,7 @@ paths:
         '200':
           description: ''
           schema:
-            $ref: "#/definitions/surveyCreateResponse"
+            $ref: "#/definitions/surveyResultResponse"
         '400':
           description: 'Bad request'
           schema:
@@ -191,7 +191,7 @@ paths:
       - "Surveys"
       description: 'submit a survey response'
       summary: 'http://127.0.0.1:3000/v1/surveys/{surveyId}/response'
-      operationId: 'getSurveyResponse'
+      operationId: 'submitSurvey'
       parameters:
         - name: Authorization
           in: header
@@ -350,6 +350,10 @@ definitions:
   surveyResultDateQuery:
     type: "object"
     properties:
+      values:
+        type: "array"
+        items:
+          type: "string"
       from:
         type: "string"
       to:
@@ -357,8 +361,6 @@ definitions:
   surveyResponseReqBody:
     type: "object"
     properties:
-      totalQuestions:
-        type: "integer"
       questions:
         type: "array"
         items:
@@ -372,4 +374,33 @@ definitions:
       questionId:
         type: "string"
       answer:
-        type: "boolean"
+        type: "string"
+  surveyResultResponse:
+    type: "object"
+    properties:
+      questions:
+        type: "array"
+        items:
+          $ref: '#/definitions/surveyResultResponseItem'
+  surveyResultResponseItem:
+    type: "object"
+    required:
+    - "question"
+    - "result"
+    properties:
+      question:
+        type: "string"
+      result:
+        type: "array"
+        items:
+          $ref: '#/definitions/result'
+  result:
+    type: "object"
+    required:
+    - "value"
+    - "percent"
+    properties:
+      value:
+        type: "string"
+      percent:
+        type: "number"
