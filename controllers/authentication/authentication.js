@@ -24,6 +24,7 @@ class Authentication {
       user_name: userInfo.name,
       email: userInfo.email,
       phone: userInfo.phone,
+      userId: userInfo.userId
     }, privateKey, { algorithm: 'RS256' });
     return jwtToken;
   }

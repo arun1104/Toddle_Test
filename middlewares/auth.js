@@ -11,6 +11,7 @@ module.exports.authMiddleware = function(req, res, next) {
     if (!publicApis.includes(operationId)){
       var cert = fs.readFileSync(filePath);
       var decoded = jwt.verify(req.headers.authorization, cert, { algorithms: ['RS256'] });
+      req.body.createdBy = decoded.userId;
       console.log(decoded);
       next();
     } else {

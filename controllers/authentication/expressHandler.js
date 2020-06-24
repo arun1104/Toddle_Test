@@ -10,7 +10,6 @@ class ExpressHandler {
   constructor() {
     this.auth = auth;
     this.loginRequesthandler = this.loginRequesthandler.bind(this);
-    this.logoutRequesthandler = this.logoutRequesthandler.bind(this);
     this.signupRequesthandler = this.signupRequesthandler.bind(this);
   }
 
@@ -57,26 +56,6 @@ class ExpressHandler {
 
     }
   }
-
-  async logoutRequesthandler(req, res) {
-    const correlationId = req.correlationId();
-    const logger = new Logger(correlationId, 'createRequesthandler-expressHandler', 'createRequesthandler');
-    logger.info('Entry');
-    try {
-      res.clearCookie('access_token');
-      res.status(200).send({ message: 'successfully logged out' });
-    } catch (err) {
-      if (err.status && err.message) {
-        res.status(err.status).send({ message: err.message });
-      } else if (err.message) {
-        res.status(400).send({ message: err.message }); // JOI validation error
-      } else {
-        res.status(500).send({ message: 'Unexpected error' });
-      }
-
-    }
-  }
-
 }
 
 module.exports = new ExpressHandler();
