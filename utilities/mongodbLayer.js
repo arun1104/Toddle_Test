@@ -11,7 +11,25 @@ class DBLayer {
     this.getDocs = this.getDocs.bind(this);
     this.getMongoClientPromise = this.getMongoClientPromise.bind(this);
     this.createDoc = this.createDoc.bind(this);
+    this.insertDocs = this.insertDocs.bind(this);
     this.updateDoc = this.updateDoc.bind(this);
+  }
+
+  async insertDocs(options, correlationId, modelName){
+    const logger = new Logger(correlationId, 'insertDocs-mongodbLayer', 'insertDocs');
+    try {
+      let connectionString = `${process.env.mongoUrl}/${process.env.dbName}`;
+      logger.info('Connection string', connectionString);
+      await this.Mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
+      let model = this.Mongoose.model(modelName);
+      let result = await model.insertMany(options.data);
+      return result;
+    } catch (err) {
+      logger.error(err);
+      let error = new Error('DB error');
+      error.status = 500;
+      throw error;
+    }
   }
 
   async getMongoClientPromise(options) {

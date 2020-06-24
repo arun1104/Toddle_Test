@@ -279,7 +279,6 @@ definitions:
     required:
     - "question"
     - "type"
-    - "options"
     properties:
       surveyId:
         type: "string"

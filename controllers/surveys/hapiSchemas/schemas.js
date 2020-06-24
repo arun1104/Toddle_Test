@@ -7,22 +7,28 @@ const questionSchema = Joi.object({
     .min(3)
     .max(30)
     .required(),
-  question: Joi.string()
+  surveyId: Joi.string()
     .trim()
     .min(3)
     .max(200)
     .required(),
-  type: Joi.string()
-    .trim()
-    .min(3)
-    .max(10)
-    .default('boolean'),
-  options: Joi.string()
-    .trim()
-    .min(3)
-    .max(10)
-    .default(['yes', 'no']),
-});
+  questions: Joi.array().items(Joi.object({
+    question: Joi.string()
+      .trim()
+      .min(3)
+      .max(200)
+      .required(),
+    type: Joi.string()
+      .trim()
+      .min(3)
+      .max(10)
+      .default('boolean'),
+    options: Joi.string()
+      .trim()
+      .min(3)
+      .max(10)
+      .default(['yes', 'no']),
+  }))});
 
 const surveySchema = Joi.object({
   name: Joi.string()

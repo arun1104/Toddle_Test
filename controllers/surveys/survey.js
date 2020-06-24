@@ -9,7 +9,26 @@ class Survey {
     this.createSurvey = this.createSurvey.bind(this);
     this.updateSurvey = this.updateSurvey.bind(this);
     this.getSurvey = this.getSurvey.bind(this);
+    this.addQuestions = this.addQuestions.bind(this);
   }
+
+  async addQuestions(body, correlationId) {
+    const logger = new Logger(correlationId, 'addQuestions-Survey', 'addQuestions');
+    logger.info('Entry');
+    try {
+      let survey = await this.dbLayer.insertDocs({ data: body }, correlationId, constants['SURVEY_QUESTIONS']);
+      logger.info('Exit');
+      return survey;
+    } catch (err) {
+      logger.error(err);
+      if (!err.status){
+        let error = new Error('Internal server error');
+        error.status = 500;
+        throw error;
+      } else throw err;
+    }
+  }
+
   async createSurvey(body, correlationId) {
     const logger = new Logger(correlationId, 'createSurvey-Survey', 'createSurvey');
     logger.info('Entry');
