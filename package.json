@@ -1,0 +1,57 @@
+{
+    "name": "toddle-api",
+    "version": "1.0.0",
+    "description": "toddle backend test",
+    "main": "app.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "test": "node ./node_modules/mocha/bin/_mocha --recursive ./test/unit",
+        "start": "node -r dotenv/config app.js",
+        "coverage": "nyc npm run test",
+        "fixlint": "eslint --fix --ignore-path .gitignore ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/arun1104/Toddle_Test"
+    },
+    "keywords": [
+        "quiz",
+        "swagger"
+    ],
+    "author": "arun rajeevan",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/arun1104/Toddle_Test/issues"
+    },
+    "homepage": "https://github.com/arun1104/Toddle_Test/blob/master/README.md",
+    "dependencies": {
+        "@hapi/joi": "^17.1.1",
+        "body-parser": "^1.19.0",
+        "cookie-parser": "^1.4.4",
+        "cors": "^2.8.5",
+        "dotenv": "^8.0.0",
+        "express": "^4.17.1",
+        "express-correlation-id": "^1.3.1",
+        "js-yaml": "^3.13.1",
+        "jsonwebtoken": "^8.5.1",
+        "mongodb": "^3.5.8",
+        "mongodb-memory-server": "^6.6.1",
+        "mongoose": "^5.9.18",
+        "morgan": "^1.9.1",
+        "multer": "^1.4.2",
+        "swagger-tools": "^0.10.4",
+        "uuid": "^8.1.0",
+        "winston": "^3.2.1"
+    },
+    "devDependencies": {
+        "chai": "^4.2.0",
+        "chai-http": "^4.3.0",
+        "mocha": "^6.1.4",
+        "mochawesome": "^4.0.1",
+        "sinon": "^9.0.2",
+        "eslint": "^7.2.0",
+        "eslint-config-strongloop": "^2.1.0"
+    }
+}

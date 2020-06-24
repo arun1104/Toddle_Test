@@ -1,0 +1,354 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: Toddle Assignment
+  description: 'CRUD Apis of Users and Surveys'
+  contact: {}
+host: '127.0.0.1:3000'
+basePath: /v1
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /login:
+    post:
+      tags:
+      - "Authentication"
+      description: 'Get list of users or details of a particular user'
+      summary: 'http://127.0.0.1:3000/v1/login'
+      operationId: 'login'
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/login"
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: "#/definitions/loginResponse"
+        '400':
+          description: 'Bad request'
+          schema:
+            $ref: "#/definitions/errorMessage"
+  /surveys:
+    get:
+      tags:
+      - "Surveys"
+      description: 'Get survey questions details using Id'
+      summary: 'http://127.0.0.1:3000/v1/surveys'
+      operationId: 'getSurvey'
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: query
+          type: string
+          description: 'survey id'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: "#/definitions/getSurveyResponse"
+        '400':
+          description: 'Bad request'
+          schema:
+            $ref: "#/definitions/errorMessage"
+        '404':
+          description: 'User not found'
+        '500':
+          description: 'Server error'
+    post:
+      tags:
+      - "Surveys"
+      description: 'create a Survey'
+      summary: 'http://127.0.0.1:3000/v1/surveys'
+      operationId: 'createSurvey'
+      parameters:
+        - name: Content-Type
+          in: header
+          required: false
+          type: string
+          description: ''
+          default: 'application/json'
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/surveyMetadata"
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: "#/definitions/surveyCreateResponse"
+        '400':
+          description: 'Bad request'
+          schema:
+            $ref: "#/definitions/errorMessage"
+        '500':
+          description: 'Server error'
+  /surveys/{surveyId}/questions:
+    post:
+      tags:
+      - "Surveys"
+      description: 'Add Survey Questions'
+      summary: 'http://127.0.0.1:3000/v1/surveys/{surveyId}'
+      operationId: 'addSurveyQuestions'
+      parameters:
+        - name: surveyId
+          in: path
+          required: true
+          type: string
+          description: ''
+          default: 'application/json'
+        - name: Content-Type
+          in: header
+          required: false
+          type: string
+          description: ''
+          default: 'application/json'
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/addSurveyQuestions"
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: "#/definitions/surveyCreateResponse"
+        '400':
+          description: 'Bad request'
+          schema:
+            $ref: "#/definitions/errorMessage"
+        '500':
+          description: 'Server error'
+  /surveys/{surveyId}/results:
+    post:
+      tags:
+      - "Surveys"
+      description: 'Get survey result'
+      summary: 'http://127.0.0.1:3000/v1/surveys/{surveyId}/result'
+      operationId: 'getSurveyResult'
+      parameters:
+        - name: surveyId
+          in: path
+          required: true
+          type: string
+          description: ''
+          default: 'application/json'
+        - name: Content-Type
+          in: header
+          required: false
+          type: string
+          description: ''
+          default: 'application/json'
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/surveyResultDateQuery"
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: "#/definitions/surveyCreateResponse"
+        '400':
+          description: 'Bad request'
+          schema:
+            $ref: "#/definitions/errorMessage"
+        '500':
+          description: 'Server error'
+  /surveys/{surveyId}/response:
+    post:
+      tags:
+      - "Surveys"
+      description: 'submit a survey response'
+      summary: 'http://127.0.0.1:3000/v1/surveys/{surveyId}/response'
+      operationId: 'getSurveyResponse'
+      parameters:
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+          description: ''
+          default: 'Bearer '
+        - name: surveyId
+          in: path
+          required: true
+          type: string
+          description: ''
+          default: 'application/json'
+        - name: Content-Type
+          in: header
+          required: false
+          type: string
+          description: ''
+          default: 'application/json'
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/surveyResponseReqBody"
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: "#/definitions/surveyCreateResponse"
+        '400':
+          description: 'Bad request'
+          schema:
+            $ref: "#/definitions/errorMessage"
+        '500':
+          description: 'Server error'
+  /signup:
+    post:
+      tags:
+      - "Authentication"
+      description: 'sign up an user'
+      summary: 'http://127.0.0.1:3000/v1/signup'
+      operationId: 'signUp'
+      parameters:
+        - name: Content-Type
+          in: header
+          required: false
+          type: string
+          description: ''
+          default: 'application/json'
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/signupUser"
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: "#/definitions/signupUserResponse"
+        '400':
+          description: 'Bad request'
+          schema:
+            $ref: "#/definitions/errorMessage"
+        '500':
+          description: 'Server error'
+definitions:
+  getSurveyResponse:
+    type: "object"
+    properties:
+      totalQuestions:
+        type: "integer"
+      questions:
+        type: "array"
+        items:
+          $ref: '#/definitions/surveyQuestion'
+  addSurveyQuestions:
+    type: "object"
+    properties:
+      questions:
+        type: "array"
+        items:
+          $ref: '#/definitions/surveyQuestion'
+  surveyQuestion:
+    type: "object"
+    required:
+    - "question"
+    - "type"
+    - "options"
+    properties:
+      question:
+        type: "string"
+      type:
+        type: "string"
+      options:
+        type: "array"
+        items:
+          type: "string"
+      canBeSkipped:
+        type: "boolean"
+  errorMessage:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+  signupUser:
+    type: "object"
+    properties:
+      userId:
+        type: "string"
+      password:
+        type: "string"
+      email:
+        type: "string"
+      phone:
+        type: "string"
+  login:
+    type: "object"
+    properties:
+      userId:
+        type: "string"
+      password:
+        type: "string"
+  loginResponse:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+      message:
+        type: "string"
+  surveyCreateResponse:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+      id:
+        type: "string"
+  signupUserResponse:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+      userId:
+        type: "string"
+  surveyMetadata:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      category:
+        type: "string"
+      subject:
+        type: "string"
+  surveyResultDateQuery:
+    type: "object"
+    properties:
+      from:
+        type: "string"
+      to:
+        type: "string"
+  surveyResponseReqBody:
+    type: "object"
+    properties:
+      totalQuestions:
+        type: "integer"
+      questions:
+        type: "array"
+        items:
+          $ref: '#/definitions/surveyResponse'
+  surveyResponse:
+    type: "object"
+    required:
+    - "questionId"
+    - "answer"
+    properties:
+      questionId:
+        type: "string"
+      answer:
+        type: "boolean"
