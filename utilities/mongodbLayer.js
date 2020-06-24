@@ -42,13 +42,14 @@ class DBLayer {
       }
     });
   }
-  async getDocs(options, correlationId, collection) {
+  async getDocs(params, correlationId, collection) {
     const logger = new Logger(correlationId, 'getDocs', 'getDocs');
-    logger.info('Entry', options);
+    logger.info('Entry', params);
     try {
-      options.collection = collection;
+      let options = params;
       options.correlationId = correlationId;
-      let docs = await this.getMongoClientPromise(options, correlationId, collection);
+      options.collection = collection;
+      let docs = await this.getMongoClientPromise(options);
       return docs;
     } catch (err) {
       logger.error(err);

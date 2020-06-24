@@ -6,4 +6,5 @@ module.exports = {
   login: authenticationHandler.loginRequesthandler,
   signUp: authenticationHandler.signupRequesthandler,
   createSurvey: surveyHandler.createSurveyRequesthandler,
+  getSurvey: surveyHandler.getSurveyRequesthandler,
 };

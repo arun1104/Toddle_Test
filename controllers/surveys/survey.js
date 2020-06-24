@@ -49,10 +49,12 @@ class Survey {
     }
   }
 
-  async getSurvey(options, correlationId) {
+  async getSurvey(surveyId, correlationId) {
     const logger = new Logger(correlationId, 'getSurvey-Survey', 'getSurvey');
-    logger.info('Entry', options);
+    logger.info('Entry', surveyId);
     try {
+      let options = {query: { surveyId}, index: 0, count: 1};
+      options.correlationId = correlationId;
       let docs = await this.dbLayer.getDocs(options, correlationId, constants['SURVEY_COLLECTION']);
       logger.info('Exit');
       return docs;
