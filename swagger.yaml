@@ -342,6 +342,8 @@ definitions:
         type: "string"
       phone:
         type: "string"
+      name:
+        type: "string"
   login:
     type: "object"
     properties:
