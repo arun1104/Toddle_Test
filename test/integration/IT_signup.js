@@ -22,22 +22,16 @@ describe('sign up user positive suit', function() {
   it('should return 200 for valid req', async function() {
     try {
       let body = {
-        userId: 'arunr3',
+        userId: 'arunr8', // The req will fail if same user already exists
         password: '12345678',
         email: 'as@b.com',
         phone: '959584748484',
         name: 'aman cnanje',
       };
       const resp = await axios.post(
-        'https://localhost:3000/v1/signup',
+        'https://arcane-falls-01320.herokuapp.com/v1/signup',
         body,
-        {
-          httpsAgent: new https.Agent({
-            rejectUnauthorized: false,
-          }),
-        },
       );
-      //let resp = await axios.post('https://localhost:3000/v1/signup');
       assert.equal(resp.status, 200);
     } catch (err){
       assert.fail(err);
