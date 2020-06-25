@@ -34,6 +34,7 @@ mongoose.model('surveys', surveySchema, 'surveys');
 const questionsSchema = new Schema({
   createdBy: { type: String, required: true, lowercase: true, trim: true },
   surveyId: { type: String, required: true},
+  questionId: { type: String, required: true },
   question: { type: String, required: true },
   type: { type: String, required: true },
   options: [{ type: String }],

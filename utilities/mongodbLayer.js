@@ -73,9 +73,15 @@ class DBLayer {
             temp.result = answerCount;
             result.push(temp);
           }
-          resolve({ result});
+          const questionIds = result.map(e => e.questionId);
+          const questionCollection = db.collection(options.questionCollection);
+          let questions = await questionCollection.find({ questionId: { $in: questionIds} }).toArray();
+          let questionMap = {};
+          questions.map(e => {
+            questionMap[e.questionId] = e.question;
+          });
+          resolve({ result, questionMap});
         });
-
       } catch (err) {
         console.log('Db conn err', err);
         reject(new Error('DB error'));

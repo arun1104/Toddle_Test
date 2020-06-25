@@ -18,7 +18,7 @@ class Survey {
     const logger = new Logger(correlationId, 'getSurveyResult-Survey', 'getSurveyResult');
     logger.info('Entry');
     try {
-      let options = {surveyId, correlationId, collection: constants['SURVEY_RESPONSE']};
+      let options = {surveyId, correlationId, collection: constants['SURVEY_RESPONSE'], questionCollection: constants['SURVEY_QUESTIONS']};
       let survey = await this.dbLayer.getValuesAggregationMongoDB(options, correlationId);
       logger.info('Exit');
       return survey;
@@ -53,6 +53,10 @@ class Survey {
     const logger = new Logger(correlationId, 'addQuestions-Survey', 'addQuestions');
     logger.info('Entry');
     try {
+      body.forEach(element => {
+        let questionId = makeid(30);
+        element.questionId = questionId;
+      });
       let survey = await this.dbLayer.insertDocs({ data: body }, correlationId, constants['SURVEY_QUESTIONS']);
       logger.info('Exit');
       return survey;
