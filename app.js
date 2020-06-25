@@ -81,8 +81,11 @@ swaggerTools.initializeMiddleware(swaggerDoc, function(middleware) {
   app.use(middleware.swaggerUi());
   // Start the server
   const port = (process.env.PORT) ? process.env.PORT : 3000;
-  let server = https.createServer(credentials, app);
-  server.listen(port, function() {
-    console.log('server is running on port 3000');
-  });
+  app.listen(port, () => console.log(`Example app listening at port ${port}`));
+
+  // for https
+  // let server = https.createServer(credentials, app);
+  // server.listen(port, function() {
+  //   console.log('server is running on port 3000');
+  // });
 });
