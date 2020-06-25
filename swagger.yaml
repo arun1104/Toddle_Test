@@ -4,7 +4,7 @@ info:
   title: Toddle Assignment
   description: 'CRUD Apis of Users and Surveys'
   contact: {}
-host: '127.0.0.1:3000'
+host: 'arcane-falls-01320.herokuapp.com'
 basePath: /v1
 schemes:
   - https
@@ -17,8 +17,8 @@ paths:
     post:
       tags:
       - "Authentication"
-      description: 'Get list of users or details of a particular user'
-      summary: 'http://127.0.0.1:3000/v1/login'
+      description: 'to get access token by providing valid credentials'
+      summary: 'To get access token by providing valid credentials'
       operationId: 'login'
       deprecated: false
       produces:
@@ -42,8 +42,8 @@ paths:
     get:
       tags:
       - "Surveys"
-      description: 'Get survey questions details using Id'
-      summary: 'http://127.0.0.1:3000/v1/surveys'
+      description: 'Get survey metadata'
+      summary: 'To get the details of a survey'
       operationId: 'getSurvey'
       deprecated: false
       produces:
@@ -76,7 +76,7 @@ paths:
       tags:
       - "Surveys"
       description: 'create a Survey'
-      summary: 'http://127.0.0.1:3000/v1/surveys'
+      summary: 'Create a Survey using metedata and get survey Id'
       operationId: 'createSurvey'
       parameters:
         - name: Authorization
@@ -112,7 +112,7 @@ paths:
       tags:
       - "Surveys"
       description: 'Add Survey Questions'
-      summary: 'http://127.0.0.1:3000/v1/surveys/{surveyId}'
+      summary: 'Associate a question with a survey'
       operationId: 'addSurveyQuestions'
       parameters:
         - name: Authorization
@@ -143,12 +143,46 @@ paths:
             $ref: "#/definitions/errorMessage"
         '500':
           description: 'Server error'
+    get:
+      tags:
+      - "Surveys"
+      description: 'Get survey questions'
+      summary: 'Get all the questions of a survey'
+      operationId: 'getSurveyQuestions'
+      parameters:
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+          description: ''
+          default: ''
+        - name: Content-Type
+          in: header
+          required: false
+          type: string
+          description: ''
+          default: 'application/json'
+        - name: surveyId
+          in: query
+          required: true
+          type: string
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: "#/definitions/addSurveyQuestions"
+        '400':
+          description: 'Bad request'
+          schema:
+            $ref: "#/definitions/errorMessage"
+        '500':
+          description: 'Server error'
   /surveys/{surveyId}/result:
     post:
       tags:
       - "Surveys"
       description: 'Get survey result'
-      summary: 'http://127.0.0.1:3000/v1/surveys/{surveyId}/result'
+      summary: 'Get survey result'
       operationId: 'getSurveyResult'
       parameters:
         - name: Authorization
@@ -190,7 +224,7 @@ paths:
       tags:
       - "Surveys"
       description: 'submit a survey response'
-      summary: 'http://127.0.0.1:3000/v1/surveys/{surveyId}/response'
+      summary: 'Submit survey response'
       operationId: 'submitSurvey'
       parameters:
         - name: Authorization
@@ -232,7 +266,7 @@ paths:
       tags:
       - "Authentication"
       description: 'sign up an user'
-      summary: 'http://127.0.0.1:3000/v1/signup'
+      summary: 'Create a new user'
       operationId: 'signUp'
       parameters:
         - name: Content-Type

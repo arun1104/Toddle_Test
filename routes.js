@@ -10,4 +10,5 @@ module.exports = {
   addSurveyQuestions: surveyHandler.createSurveyQuestionRequesthandler,
   submitSurvey: surveyHandler.submitSurveyRequesthandler,
   getSurveyResult: surveyHandler.getSurveyResulthandler,
+  getSurveyQuestions: surveyHandler.getSurveyQuestionshandler,
 };
